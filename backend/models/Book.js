@@ -13,7 +13,7 @@ const bookSchema = Schema(
     },
 
     pages: { type: Number, default: 1 },
-    owner: "",
+    user: "",
 
     picture: { type: String, default: "No image provided" },
   },

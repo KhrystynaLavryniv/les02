@@ -1,6 +1,6 @@
 const Book = require("../models/Book");
 const asyncHandler = require("express-async-handler");
-
+const RepozytoryBooks = require("../../repozytory/RepozytoryBooks");
 class BooksController {
   add = asyncHandler(async (req, res) => {
     // throw new Error("Test помилки");
@@ -18,7 +18,9 @@ class BooksController {
   });
 
   getAll = asyncHandler(async (req, res) => {
-    const books = await Book.find({});
+    // const books = await Book.find({});
+    const books = await RepozytoryBooks.getAll();
+    console.log(books);
     res.status(200).json({
       status: "Ok",
       data: books,
@@ -41,11 +43,36 @@ class BooksController {
   });
 
   update = asyncHandler(async (req, res) => {
-    res.send("upres.sent");
+    const { id } = req.params;
+    const book = await Book.findById(id);
+    if (!book) {
+      res.status(401);
+      throw new Error("Book not found");
+    }
+    const updatedBook = await Book.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({
+      status: "Ok",
+      data: updatedBook,
+    });
   });
 
   remove = asyncHandler(async (req, res) => {
-    res.send("remove");
+    const { id } = req.params;
+    const book = await Book.findById(id);
+
+    if (!book) {
+      res.status(401);
+      throw new Error("Book not found");
+    }
+
+    await book.remove();
+    res.status(200).json({
+      status: "Ok",
+      data: id,
+    });
   });
 }
 

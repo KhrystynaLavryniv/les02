@@ -12,7 +12,7 @@ router.get("/", BooksController.getAll);
 
 router.get("/:id", BooksController.getOne);
 
-router.put("/:id", BooksController.update);
+router.patch("/:id", BooksController.update);
 
 router.delete("/:id", BooksController.remove);
 

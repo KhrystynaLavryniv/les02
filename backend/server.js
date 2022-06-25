@@ -9,9 +9,11 @@ dotenv.config({ path: envPath });
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 const booksRouter = require("./routes/booksRouter");
 app.use("/api/v1/books", booksRouter);
-
+const usersRouter = require("./routes/usersRouter");
+app.use("/api/v1/users", usersRouter);
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
